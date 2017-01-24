@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <!--<link rel="stylesheet" type="text/css" href="css/main.css" />-->
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <script type="text/javascript" src="app.js"></script>
+
+  <style>
+    body {
+      margin: 50px;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    .swatch {
+      margin: 5px;
+      width: 40px;
+      height: 40px;
+      -webkit-border-radius:100px;
+      -moz-border-radius:100px;
+      border-radius:100px;
+      border: 1px solid #9c9c9c;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .dress-container, .feature-box {
+      border: 1px solid #ccc;
+      padding: 15px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+    }
+
+    .feature-box h2 {
+      border-bottom: 1px solid black;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="main-content"></div>
+
+<script>
+  var target = document.getElementById("main-content");
+  var app = Elm.App.embed(target);
+</script>
+</body>
+</html>
