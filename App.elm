@@ -18,6 +18,7 @@ type alias Model =
 
 type alias Dress =
     { color : String
+    , strokeColor : String
     , points : String
     }
 
@@ -50,6 +51,7 @@ initDressConfig =
     in
         { color =
             Colors.magenta
+        , strokeColor = Colors.black
         , points =
             (points
                 |> List.map polyPoint
@@ -66,7 +68,7 @@ initColors =
     , Colors.red
     , Colors.yellow
     , Colors.purple
-    , Colors.blue
+    , Colors.green
     , Colors.black
     ]
 
@@ -76,7 +78,8 @@ initColors =
 
 
 type Msg
-    = ChangeColor String
+    = ChangeDressColor String
+    | ChangeStrokeColor String
     | FetchSucceed Model
     | FetchFail Http.Error
 
@@ -84,8 +87,11 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ChangeColor color ->
-            ( { model | dress = { color = color, points = model.dress.points } }, Cmd.none )
+        ChangeDressColor color ->
+            ( { model | dress = { strokeColor = model.dress.strokeColor, color = color, points = model.dress.points } }, Cmd.none )
+
+        ChangeStrokeColor strokeColor ->
+            ( { model | dress = { strokeColor = strokeColor, color = model.dress.color, points = model.dress.points } }, Cmd.none )
 
         FetchSucceed model ->
             ( model, Cmd.none )
@@ -115,8 +121,14 @@ view model =
                     ]
                 , div [ class "col-md-6 col-lg-6" ]
                     [ div [ class "feature-box" ]
-                        [ h2 [] [ text "Colors" ]
-                        , span [] (List.map swatchBtn model.colorList)
+                        [ h2 [] [ text "Dress Color" ]
+                        , span [] (List.map dressColorSwatchBtn model.colorList)
+                        ]
+                    ]
+                , div [ class "col-md-6 col-lg-6" ]
+                    [ div [ class "feature-box" ]
+                        [ h2 [] [ text "Stroke Color" ]
+                        , span [] (List.map strokeColorSwatchBtn model.colorList)
                         ]
                     ]
                 ]
@@ -136,20 +148,30 @@ dressView model =
             [ polygon
                 [ fill model.dress.color
                 , points model.dress.points
-                , stroke "black"
-                , strokeWidth "0.3"
+                , stroke model.dress.strokeColor
+                , strokeWidth "0.5"
                 ]
                 []
             ]
         ]
 
 
-swatchBtn : String -> Html Msg
-swatchBtn color =
+dressColorSwatchBtn : String -> Html Msg
+dressColorSwatchBtn color =
     div
         [ style [ ( "backgroundColor", color ) ]
         , class "swatch "
-        , onClick (ChangeColor color)
+        , onClick (ChangeDressColor color)
+        ]
+        []
+
+
+strokeColorSwatchBtn : String -> Html Msg
+strokeColorSwatchBtn color =
+    div
+        [ style [ ( "border", "6px solid " ++ color ) ]
+        , class "swatch "
+        , onClick (ChangeStrokeColor color)
         ]
         []
 

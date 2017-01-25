@@ -27,3 +27,7 @@ black =
 
 purple =
     "purple"
+
+
+green =
+    "green"
