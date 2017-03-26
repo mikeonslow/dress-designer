@@ -8,17 +8,18 @@ import Svg exposing (svg, polygon)
 import Svg.Attributes exposing (version, x, y, viewBox, fill, points, stroke, strokeWidth)
 import Http
 import Colors
+import Color exposing(Color, toRgb)
 
 
 type alias Model =
     { dress : Dress
-    , colorList : List String
+    , colorList : List Color
     }
 
 
 type alias Dress =
-    { color : String
-    , strokeColor : String
+    { color : Color
+    , strokeColor : Color
     , points : String
     }
 
@@ -50,8 +51,8 @@ initDressConfig =
             List.map (adjustPoints ( 0, (-30) )) initPoints
     in
         { color =
-            Colors.magenta
-        , strokeColor = Colors.black
+            Color.red
+        , strokeColor = Color.black
         , points =
             (points
                 |> List.map polyPoint
@@ -60,16 +61,15 @@ initDressConfig =
         }
 
 
-initColors : List String
+initColors : List Color
 initColors =
-    [ Colors.blue
-    , Colors.magenta
-    , Colors.pink
-    , Colors.red
-    , Colors.yellow
-    , Colors.purple
-    , Colors.green
-    , Colors.black
+    [ Color.red
+    , Color.blue
+    , Color.darkBlue
+    , Color.yellow
+    , Color.purple
+    , Color.green
+    , Color.black
     ]
 
 
@@ -78,8 +78,8 @@ initColors =
 
 
 type Msg
-    = ChangeDressColor String
-    | ChangeStrokeColor String
+    = ChangeDressColor Color
+    | ChangeStrokeColor Color
     | FetchSucceed Model
     | FetchFail Http.Error
 
@@ -146,9 +146,9 @@ dressView model =
             , viewBox "0 0 150 150"
             ]
             [ polygon
-                [ fill model.dress.color
+                [ fill (colorToRgb model.dress.color)
                 , points model.dress.points
-                , stroke model.dress.strokeColor
+                , stroke (colorToRgb model.dress.strokeColor)
                 , strokeWidth "0.5"
                 ]
                 []
@@ -156,25 +156,34 @@ dressView model =
         ]
 
 
-dressColorSwatchBtn : String -> Html Msg
+dressColorSwatchBtn : Color -> Html Msg
 dressColorSwatchBtn color =
     div
-        [ style [ ( "backgroundColor", color ) ]
+        [ style [ ( "backgroundColor", (colorToRgb color) ) ]
         , class "swatch "
         , onClick (ChangeDressColor color)
         ]
         []
 
 
-strokeColorSwatchBtn : String -> Html Msg
+strokeColorSwatchBtn : Color -> Html Msg
 strokeColorSwatchBtn color =
     div
-        [ style [ ( "border", "6px solid " ++ color ) ]
+        [ style [ ( "border", "6px solid " ++ (colorToRgb color) ) ]
         , class "swatch "
         , onClick (ChangeStrokeColor color)
         ]
         []
 
+colorToRgb : Color -> String
+colorToRgb color =
+  let
+    { red, green, blue, alpha } =
+      toRgb color
+    colorList =
+      [red, green, blue]
+  in
+    "rgb(" ++ (colorList |> List.map (\c->toString c) |> String.join ",") ++ ")"
 
 
 -- SUBSCRIPTIONS
