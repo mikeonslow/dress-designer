@@ -8,7 +8,7 @@ import Svg exposing (svg, polygon)
 import Svg.Attributes exposing (version, x, y, viewBox, fill, points, stroke, strokeWidth)
 import Http
 import Colors
-import Color exposing(Color, toRgb)
+import Color exposing (Color, toRgb)
 
 
 type alias Model =
@@ -175,15 +175,18 @@ strokeColorSwatchBtn color =
         ]
         []
 
+
 colorToRgb : Color -> String
 colorToRgb color =
-  let
-    { red, green, blue, alpha } =
-      toRgb color
-    colorList =
-      [red, green, blue]
-  in
-    "rgb(" ++ (colorList |> List.map (\c->toString c) |> String.join ",") ++ ")"
+    let
+        { red, green, blue, alpha } =
+            toRgb color
+
+        colorList =
+            [ red, green, blue ]
+    in
+        "rgb(" ++ (colorList |> List.map (\c -> toString c) |> String.join ",") ++ ")"
+
 
 
 -- SUBSCRIPTIONS
